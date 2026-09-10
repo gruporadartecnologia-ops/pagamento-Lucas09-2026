@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento - Lucas Ferreira da Silva</title>
+    <!-- Fontes Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --yellow-main: #FFD600;
+            --yellow-glow: rgba(255, 214, 0, 0.15);
+            --yellow-border: rgba(255, 214, 0, 0.3);
+            --bg-dark: #0A0A0C;
+            --card-bg: #141418;
+            --input-bg: #0A0A0D;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A1A1AA;
+            --text-muted: #71717A;
+            --border-subtle: #27272A;
+            --info-bg: rgba(59, 130, 246, 0.08);
+            --info-border: rgba(59, 130, 246, 0.25);
+            --info-text: #93C5FD;
+            --success: #22C55E;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(255, 214, 0, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 80% 80%, rgba(255, 214, 0, 0.03) 0%, transparent 40%);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 520px;
+            border-radius: 20px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 30px var(--yellow-glow);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #FFD600, #FFF59D, #FFD600);
+        }
+
+        .card-header {
+            padding: 32px 24px 20px 24px;
+            text-align: center;
+            position: relative;
+        }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 214, 0, 0.1);
+            border: 1px solid var(--yellow-border);
+            color: var(--yellow-main);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .badge-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background-color: var(--yellow-main);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--yellow-main);
+        }
+
+        .card-header h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .card-header p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .card-body {
+            padding: 0 24px 28px 24px;
+        }
+
+        /* Notice / Warning Box */
+        .notice-box {
+            background-color: var(--info-bg);
+            border: 1px solid var(--info-border);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .notice-icon {
+            flex-shrink: 0;
+            margin-top: 2px;
+            color: var(--info-text);
+        }
+
+        .notice-content h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #E0F2FE;
+            margin-bottom: 4px;
+        }
+
+        .notice-content p {
+            font-size: 12px;
+            color: var(--info-text);
+            line-height: 1.45;
+        }
+
+        .amount-box {
+            background: linear-gradient(180deg, rgba(255, 214, 0, 0.05) 0%, rgba(255, 214, 0, 0.01) 100%);
+            border: 1px solid var(--yellow-border);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .amount-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .amount-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--yellow-main);
+            letter-spacing: -1px;
+        }
+
+        .info-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 16px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .info-row .label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .info-row .val {
+            color: var(--text-primary);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .info-row .val-mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title svg {
+            fill: var(--yellow-main);
+        }
+
+        .code-group {
+            margin-bottom: 20px;
+        }
+
+        .code-box-mobile {
+            width: 100%;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 12px;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            resize: none;
+            outline: none;
+            transition: all 0.2s ease;
+            word-break: break-all;
+        }
+
+        .code-box-mobile:focus {
+            border-color: var(--yellow-main);
+            background-color: rgba(255, 214, 0, 0.02);
+        }
+
+        .btn-action {
+            width: 100%;
+            margin-top: 8px;
+            background-color: var(--yellow-main);
+            color: #000000;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(255, 214, 0, 0.2);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-action:hover, .btn-action:active {
+            background-color: #ffe033;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--yellow-main);
+            border: 1px solid var(--yellow-border);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover, .btn-secondary:active {
+            background-color: rgba(255, 214, 0, 0.08);
+        }
+
+        .card-footer {
+            padding: 16px 24px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: #1E293B;
+            color: #FFF;
+            border: 1px solid var(--success);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="badge-status">Aguardando Pagamento</div>
+            <h1>Checkout de Pagamento</h1>
+            <p>Escolha como deseja pagar abaixo</p>
+        </div>
+
+        <div class="card-body">
+            <!-- Aviso sobre a Data de Vencimento -->
+            <div class="notice-box">
+                <div class="notice-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                </div>
+                <div class="notice-content">
+                    <h4>Informação sobre o Vencimento</h4>
+                    <p>Devido a uma indisponibilidade temporária na instituição bancária no dia 05/09, a data de vencimento desta fatura foi ajustada para <strong>10/09</strong>. As próximas faturas retornarão normalmente ao cronograma original.</p>
+                </div>
+            </div>
+
+            <!-- Valor -->
+            <div class="amount-box">
+                <div class="amount-label">Valor Total</div>
+                <div class="amount-value">R$ 109,99</div>
+            </div>
+
+            <!-- Dados do Pagador -->
+            <div class="info-grid">
+                <div class="info-row">
+                    <span class="label">Pagador</span>
+                    <span class="val">Lucas Ferreira da Silva</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Vencimento Desta Fatura</span>
+                    <span class="val">10/09/2026</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Assinatura</span>
+                    <span class="val val-mono">21052026-102717-4856</span>
+                </div>
+            </div>
+
+            <!-- PIX -->
+            <div class="code-group">
+                <div class="section-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    PIX Copia e Cola
+                </div>
+                <textarea class="code-box-mobile" id="pixCode" rows="3" readonly onclick="this.select();">00020101021226960014br.gov.bcb.pix2574api.developer.btgpactual.com/pc/p/v2/cobv/bd52ccb2ac3e4ccba94004a8985347785204000053039865802BR5925V DE A TORRES RADAR COMER6009SAO PAULO62070503***63042B6D</textarea>
+                <button class="btn-action" onclick="copyCode('pixCode', 'Código PIX')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    Copiar Código PIX
+                </button>
+            </div>
+
+            <!-- Boleto -->
+            <div class="code-group">
+                <div class="section-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 4h2v16H3V4zm4 0h1v16H7V4zm3 0h2v16h-2V4zm4 0h1v16h-1V4zm3 0h2v16h-2V4zm4 0h1v16h-1V4z"/></svg>
+                    Linha Digitável (Boleto)
+                </div>
+                <textarea class="code-box-mobile" id="linhaDigitavel" rows="2" readonly onclick="this.select();">20890050091419844912740173292901815650000010999</textarea>
+                <button class="btn-action btn-secondary" onclick="copyCode('linhaDigitavel', 'Linha Digitável')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    Copiar Linha Digitável
+                </button>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            Ambiente seguro para visualização de pagamento
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span id="toastMsg">Copiado com sucesso!</span>
+    </div>
+
+    <script>
+        function copyCode(id, label) {
+            const textarea = document.getElementById(id);
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textarea.value).then(() => {
+                    showToast(`${label} copiado!`);
+                }).catch(() => {
+                    fallbackCopy(textarea, label);
+                });
+            } else {
+                fallbackCopy(textarea, label);
+            }
+        }
+
+        function fallbackCopy(element, label) {
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast(`${label} copiado!`);
+                } else {
+                    showToast(`Texto selecionado! Toque em 'Copiar'`);
+                }
+            } catch (err) {
+                showToast(`Texto selecionado! Toque em 'Copiar'`);
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>
